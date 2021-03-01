@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 
+// node
 struct node
 {
     int data;
@@ -24,6 +25,7 @@ public:
     void display() const;
 };
 
+// get size of tree
 int Tree::size() const
 {
     int leftHeight = getHeight(0);  // left subtree
@@ -37,11 +39,15 @@ int Tree::size() const
     return sum;
 }
 
+// check if tree is empty
 bool Tree::empty() const
 {
     return root ? false : true;
 }
 
+// get height of subtrees
+// if side = 1 that means right substree
+// if side = 0 that means left substree
 int Tree::getHeight(bool side) const
 {
     int count = 0;
@@ -76,6 +82,7 @@ int Tree::getHeight(bool side) const
     return count;
 }
 
+// display children of trees
 void Tree::display() const
 {
     node *cur = root;
@@ -100,20 +107,10 @@ void Tree::display() const
     std::cout << std::endl;
 }
 
-void Tree::balanceTree()
-{
-
-    while (children.size() > 0)
-    {
-        int mid = children.size() / 2;
-        children[mid]->right = children[mid + 1];
-        children[mid]->left = children[mid - 1];
-        root = children[mid];
-
-        children.erase(children.begin() + mid);
-    }
-}
+// function for std::sort
 bool pComp(node *a, node *b) { return a->data < b->data; }
+
+// insert node to tree
 void Tree::insert(const int value)
 {
 
@@ -151,8 +148,8 @@ void Tree::insert(const int value)
     }
     children.push_back(temp);
 
-    int leftHeight = getHeight(0);  // left subtree
-    int rightHeight = getHeight(1); // right subtree
+    int leftHeight = getHeight(0);  // get height of left subtree
+    int rightHeight = getHeight(1); // get height of right subtree
 
     node *pre = root;
     node *cur = root;
