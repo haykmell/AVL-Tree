@@ -155,4 +155,60 @@ void Tree::insert(const int value)
     node *cur = root;
 
     std::sort(children.begin(), children.end(), pComp); // sort vector of pointers
+
+    if (rightHeight - leftHeight == 2 || leftHeight - rightHeight == 2)
+    {
+        balanceTree();
+    }
 };
+
+void Tree::balanceTree()
+{
+    root = nullptr;
+    std::vector<node *> copy;
+
+    for (int i = 0; i < children.size(); i++)
+        copy.push_back(children[i]);
+
+    while (children.size() > 0)
+    {
+        int mid = children.size() / 2;
+        children[mid]->left = nullptr;
+        children[mid]->right = nullptr;
+
+        if (root == nullptr)
+        {
+            root = children[mid];
+        }
+        else
+        {
+            node *cur = root;
+            node *pre = root;
+
+            if (children[mid]->data > root->data)
+            {
+                while (cur != nullptr)
+                {
+                    pre = cur;
+                    cur = cur->right;
+                }
+            }
+            else
+            {
+                while (cur != nullptr)
+                {
+                    pre = cur;
+                    cur = cur->left;
+                }
+            }
+
+            if (children[mid]->data > pre->data)
+                pre->right = children[mid];
+            else
+                pre->left = children[mid];
+        }
+
+        children.erase(children.begin() + mid);
+    }
+    children = copy;
+}
